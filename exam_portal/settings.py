@@ -126,6 +126,8 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # WhiteNoise storage to compress and cache static files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+WHITENOISE_MANIFEST_STRICT = False
+
 
 AUTH_USER_MODEL = 'accounts.User'
 LOGIN_URL = '/login/'
