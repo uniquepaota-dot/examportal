@@ -13,3 +13,5 @@ services:
         value: "False"
       - key: ALLOWED_HOSTS
         value: "*"
+      - key: DATABASE_URL
+        value: "postgresql://exam_portal_db_8ssq_user:BHePNhr8ZgKjNXPsXvbzvQPeWzCc4iMj@dpg-d780cs94bi0s73f7hgl0-a/exam_portal_db_8ssq"
