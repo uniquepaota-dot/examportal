@@ -3,7 +3,7 @@ services:
     name: exam-portal
     env: python
     buildCommand: "./build.sh"
-    startCommand: "gunicorn exam_portal.wsgi:application"
+    startCommand: "./start.sh"
     envVars:
       - key: PYTHON_VERSION
         value: 3.10.0
