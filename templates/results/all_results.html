@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}All Exam Results - Exam Portal{% endblock %}
+
+{% block content %}
+<div class="card" style="margin-top: 2rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h2 style="color: var(--primary);">All Results</h2>
+        <p class="text-muted">Total Submissions: {{ results.count }}</p>
+    </div>
+
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+        <thead>
+            <tr style="border-bottom: 2px solid #edf2f7; color: var(--text-muted);">
+                <th style="padding: 1rem;">Student</th>
+                <th style="padding: 1rem;">Exam</th>
+                <th style="padding: 1rem;">Score</th>
+                <th style="padding: 1rem;">Status</th>
+                <th style="padding: 1rem;">Date</th>
+                <th style="padding: 1rem;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in results %}
+            <tr style="border-bottom: 1px solid #edf2f7;">
+                <td style="padding: 1rem; font-weight: 600;">{{ result.student.username }}</td>
+                <td style="padding: 1rem;">{{ result.exam.title }}</td>
+                <td style="padding: 1rem;">{{ result.score }} / {{ result.exam.total_marks }}</td>
+                <td style="padding: 1rem;">
+                    <span style="padding: 0.25rem 0.5rem; border-radius: 6px; font-weight: 600; font-size: 0.8rem; background: {% if result.score >= 50 %}#d1fae5; color: #065f46;{% else %}#fee2e2; color: #991b1b;{% endif %}">
+                        {% if result.score >= 50 %}Passed{% else %}Failed{% endif %}
+                    </span>
+                </td>
+                <td style="padding: 1rem;">{{ result.submitted_at|date:"d M Y" }}</td>
+                <td style="padding: 1rem;">
+                    <a href="{% url 'results:result_detail' result.id %}" style="color: var(--primary); font-weight: 600; text-decoration: none;">View Detail</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" style="padding: 2rem; text-align: center; color: var(--text-muted);">No results recorded yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

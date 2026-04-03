@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Exam Result - {{ result.exam.title }}{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 700px; margin: 4rem auto; text-align: center; padding: 4rem;">
+    <div style="margin-bottom: 2rem;">
+        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 1rem;">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+        <h1 style="color: var(--text-main); margin-bottom: 0.5rem;">Congratulations!</h1>
+        <p style="color: var(--text-muted); font-size: 1.1rem;">You have successfully completed the exam.</p>
+    </div>
+
+    <div style="background: var(--bg-color); border-radius: 16px; padding: 3rem; margin-bottom: 3rem;">
+        <p style="color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; font-size: 0.85rem; margin-bottom: 1rem;">Your Final Score</p>
+        <h2 style="font-size: 4rem; color: var(--primary); font-weight: 800; margin: 0;">{{ result.score }} <span style="font-size: 1.5rem; color: var(--text-muted); font-weight: 400;">/ {{ result.exam.total_marks }}</span></h2>
+        
+        {% with percentage=result.score|stringformat:"d" %}
+        <div style="margin-top: 2rem; width: 100%; background: #e2e8f0; height: 10px; border-radius: 5px; overflow: hidden;">
+            <div style="width: {{ result.score }}%; background: var(--primary); height: 100%;"></div>
+        </div>
+        {% endwith %}
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left; margin-bottom: 3rem; background: white; border: 1px solid var(--bg-color); padding: 1.5rem; border-radius: 12px;">
+        <div>
+            <p style="color: var(--text-muted); font-size: 0.85rem;">Exam Title</p>
+            <p style="font-weight: 600;">{{ result.exam.title }}</p>
+        </div>
+        <div>
+            <p style="color: var(--text-muted); font-size: 0.85rem;">Submitted On</p>
+            <p style="font-weight: 600;">{{ result.submitted_at|date:"d M Y, H:i" }}</p>
+        </div>
+    </div>
+
+    <div style="display: flex; gap: 15px;">
+        <a href="{% url 'exams:student_dashboard' %}" class="btn" style="flex: 1; padding: 1rem;">Back to Dashboard</a>
+        <button onclick="window.print()" class="btn btn-secondary" style="flex: 1; padding: 1rem;">Download Result</button>
+    </div>
+</div>
+{% endblock %}

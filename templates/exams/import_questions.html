@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Import Questions - Exam Portal{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 600px; margin: 3rem auto;">
+    <h2 style="color: var(--primary); margin-bottom: 1.5rem;">Import Questions from Excel/CSV</h2>
+    <p class="text-muted mb-4">Bulk upload questions to <strong>{{ exam.title }}</strong> easily.</p>
+
+    <div style="background: var(--bg-color); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
+        <h4 style="margin-bottom: 1rem;">Required Format</h4>
+        <p style="font-size: 0.9rem; margin-bottom: 1rem;">Your file must have a header row and follow this column order:</p>
+        <table style="width: 100%; font-size: 0.8rem; border-collapse: collapse;">
+            <tr style="text-align: left; border-bottom: 1px solid #ddd;">
+                <th style="padding: 5px;">A</th>
+                <th style="padding: 5px;">B</th>
+                <th style="padding: 5px;">C</th>
+                <th style="padding: 5px;">D</th>
+                <th style="padding: 5px;">E</th>
+                <th style="padding: 5px;">F</th>
+            </tr>
+            <tr>
+                <td style="padding: 5px;">Question</td>
+                <td style="padding: 5px;">Opt 1</td>
+                <td style="padding: 5px;">Opt 2</td>
+                <td style="padding: 5px;">Opt 3</td>
+                <td style="padding: 5px;">Opt 4</td>
+                <td style="padding: 5px;">Answer Text</td>
+            </tr>
+        </table>
+        <p style="font-size: 0.85rem; margin-top: 1rem; color: var(--text-main);"><strong>Note:</strong> The "Answer Text" must match one of your 4 options exactly (case-insensitive).</p>
+        <div style="margin-top: 1.5rem;">
+            <a href="/static/questions_sample.csv" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.5rem 1rem;">Download Sample CSV</a>
+        </div>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="file">Select File (.xlsx or .csv)</label>
+            <input type="file" name="file" id="file" class="form-control" accept=".xlsx, .csv" required>
+        </div>
+        
+        <div style="display: flex; gap: 10px; margin-top: 2rem;">
+            <button type="submit" class="btn" style="flex: 1;">Start Import</button>
+            <a href="{% url 'exams:admin_dashboard' %}" class="btn btn-secondary" style="flex: 1;">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

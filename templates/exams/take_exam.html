@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}Taking Exam - {{ exam.title }}{% endblock %}
+
+{% block content %}
+<div class="exam-container" style="max-width: 900px; margin: 2rem auto;">
+    <div class="exam-header" style="position: sticky; top: 0; background: var(--bg-color); padding: 1.5rem 0; z-index: 50; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--border-color);">
+        <div>
+            <h2 style="color: var(--primary); font-size: 1.5rem; margin-bottom: 0.25rem;">{{ exam.title }}</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Question <span id="current-q-num">1</span> of {{ questions.count }}</p>
+        </div>
+        <div id="timer" style="background: var(--card-bg); padding: 0.75rem 1.5rem; border-radius: 12px; box-shadow: var(--shadow); font-weight: 700; font-size: 1.2rem; color: var(--danger); display: flex; align-items: center; gap: 10px;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <span id="time-left">00:00</span>
+        </div>
+    </div>
+
+    <form id="exam-form" action="{% url 'results:submit_exam' exam.id %}" method="POST" style="margin-top: 3rem;">
+        {% csrf_token %}
+        
+        {% for question in questions %}
+        <div class="question-card card mb-4" id="q-{{ forloop.counter }}" style="{% if not forloop.first %}display: none;{% endif %}">
+            <h3 style="margin-bottom: 2rem; font-weight: 600; line-height: 1.5;">{{ forloop.counter }}. {{ question.question_text }}</h3>
+            
+            <div class="options">
+                <label class="exam-option">
+                    <input type="radio" name="question_{{ question.id }}" value="1">
+                    <span>{{ question.option1 }}</span>
+                </label>
+                <label class="exam-option">
+                    <input type="radio" name="question_{{ question.id }}" value="2">
+                    <span>{{ question.option2 }}</span>
+                </label>
+                <label class="exam-option">
+                    <input type="radio" name="question_{{ question.id }}" value="3">
+                    <span>{{ question.option3 }}</span>
+                </label>
+                <label class="exam-option">
+                    <input type="radio" name="question_{{ question.id }}" value="4">
+                    <span>{{ question.option4 }}</span>
+                </label>
+            </div>
+            
+            <div class="navigation-btns" style="display: flex; justify-content: space-between; margin-top: 3rem;">
+                <button type="button" class="btn btn-secondary prev-btn" style="{% if forloop.first %}visibility: hidden;{% endif %}">Previous</button>
+                
+                {% if forloop.last %}
+                <button type="submit" class="btn" style="background: var(--success);" onclick="return confirm('Are you sure you want to submit?')">Submit Exam</button>
+                {% else %}
+                <button type="button" class="btn next-btn">Next Question</button>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </form>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Timer Logic
+        let duration = {{ exam.duration }} * 60; // duration in seconds
+        const timerDisplay = document.getElementById('time-left');
+        const examForm = document.getElementById('exam-form');
+
+        const countdown = setInterval(function() {
+            let minutes = Math.floor(duration / 60);
+            let seconds = duration % 60;
+            
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            
+            timerDisplay.textContent = minutes + ':' + seconds;
+            
+            if (duration <= 0) {
+                clearInterval(countdown);
+                alert('Time is up! Your exam will be submitted automatically.');
+                examForm.submit();
+            }
+            duration--;
+        }, 1000);
+
+        // Multi-step form logic
+        const questions = document.querySelectorAll('.question-card');
+        const nextBtns = document.querySelectorAll('.next-btn');
+        const prevBtns = document.querySelectorAll('.prev-btn');
+        const currentQNum = document.getElementById('current-q-num');
+        let currentIdx = 0;
+
+        nextBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                questions[currentIdx].style.display = 'none';
+                currentIdx++;
+                questions[currentIdx].style.display = 'block';
+                currentQNum.textContent = currentIdx + 1;
+            });
+        });
+
+        prevBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                questions[currentIdx].style.display = 'none';
+                currentIdx--;
+                questions[currentIdx].style.display = 'block';
+                currentQNum.textContent = currentIdx + 1;
+            });
+        });
+    });
+</script>
+
+<style>
+    .exam-option input[type="radio"]:checked + span {
+        font-weight: 700;
+        color: var(--primary);
+    }
+    
+    .exam-option:has(input[type="radio"]:checked) {
+        border-color: var(--primary);
+        background: rgba(67, 24, 255, 0.05);
+        box-shadow: 0 0 0 2px rgba(67, 24, 255, 0.1);
+    }
+</style>
+{% endblock %}

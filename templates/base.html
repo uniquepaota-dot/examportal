@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Exam Portal{% endblock %}</title>
+    <!-- Modern Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <header class="header-wrapper">
+        <div class="header-main">
+            <!-- Brand Section -->
+            <div class="header-brand">
+                <div class="brand-icon">A</div>
+                <div class="brand-text">
+                    <h1>ExamPortal</h1>
+                    <p>Admin control and exam operations</p>
+                </div>
+            </div>
+
+            <!-- Central Navigation (Visible for Admins) -->
+            <div class="nav-grid-center">
+                {% if user.is_authenticated %}
+                    {% if user.is_admin or user.is_superuser %}
+                        <a href="{% url 'exams:admin_dashboard' %}" class="nav-item active">Dashboard</a>
+                        <a href="{% url 'exams:exam_create' %}" class="nav-item">Create Exam</a>
+                        <a href="{% url 'exams:admin_dashboard' %}" class="nav-item">Question Bank</a>
+                        <a href="{% url 'exams:all_results' %}" class="nav-item">Results</a>
+                        <a href="{% url 'exams:student_list' %}" class="nav-item">Student Database</a>
+                        <a href="{% url 'exams:admin_dashboard' %}" class="nav-item">Import</a>
+                    {% else %}
+                        <a href="{% url 'exams:student_dashboard' %}" class="nav-item active">Dashboard</a>
+                        <a href="{% url 'exams:student_dashboard' %}" class="nav-item">Available Exams</a>
+                        <a href="{% url 'exams:student_dashboard' %}" class="nav-item">My Results</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+
+            <div class="header-user">
+                {% if user.is_authenticated %}
+                    {% if user.is_admin or user.is_superuser %}
+                        <a href="{% url 'exams:admin_dashboard' %}" class="btn-manage" style="text-decoration: none;">Manage Exams</a>
+                    {% endif %}
+                    
+                    <div class="user-card">
+                        <div class="user-avatar">{{ user.username|first|upper }}</div>
+                        <div class="user-info">
+                            <h4>{{ user.username }}</h4>
+                            <p>{% if user.is_admin %}Admin account{% else %}Student account{% endif %}</p>
+                            {% if user.is_admin %}
+                                <a href="{% url 'accounts:admin_password_change' %}" style="font-size: 0.7rem; color: var(--primary); text-decoration: none;">Change Password</a>
+                            {% endif %}
+                        </div>
+                        <a href="{% url 'accounts:logout' %}" title="Logout" style="margin-left: 10px; color: var(--danger);">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+                            </svg>
+                        </a>
+                    </div>
+                {% else %}
+                    <a href="{% url 'accounts:login' %}" class="nav-item">Login</a>
+                    <a href="{% url 'accounts:register' %}" class="btn-manage" style="text-decoration: none;">Register</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li class="{% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

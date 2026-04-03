@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Exam Portal{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 400px; margin: 4rem auto;">
+    <h2 class="text-center mb-3" style="color: var(--primary);">Welcome Back</h2>
+    <p class="text-center text-muted mb-4">Login to your account to continue</p>
+    
+    <form method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field.errors }}
+                {{ field }}
+                {% if field.help_text %}
+                    <small class="text-muted">{{ field.help_text|safe }}</small>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn" style="width: 100%;">Login</button>
+    </form>
+    
+    <p class="text-center mt-4">
+        Don't have an account? <a href="{% url 'accounts:register' %}" style="color: var(--primary); font-weight: 500; text-decoration: none;">Register here</a>
+    </p>
+</div>
+{% endblock %}

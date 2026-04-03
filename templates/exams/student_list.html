@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Student Database - Exam Portal{% endblock %}
+
+{% block content %}
+<div class="card" style="margin-top: 2rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h2 style="color: var(--primary);">Student Database</h2>
+        <p class="text-muted">Total Students: {{ students.count }}</p>
+    </div>
+
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+        <thead>
+            <tr style="border-bottom: 2px solid #edf2f7; color: var(--text-muted);">
+                <th style="padding: 1rem;">Username</th>
+                <th style="padding: 1rem;">Email</th>
+                <th style="padding: 1rem;">Father's Name</th>
+                <th style="padding: 1rem;">Contact No</th>
+                <th style="padding: 1rem;">Status</th>
+                <th style="padding: 1rem;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr style="border-bottom: 1px solid #edf2f7; {% if not student.is_active %}background: #f7fafc; color: #a0aec0;{% endif %}">
+                <td style="padding: 1rem; font-weight: 600;">{{ student.username }}</td>
+                <td style="padding: 1rem;">{{ student.email }}</td>
+                <td style="padding: 1rem;">{{ student.father_name|default:"-" }}</td>
+                <td style="padding: 1rem;">{{ student.contact_no|default:"-" }}</td>
+                <td style="padding: 1rem;">
+                    <span style="padding: 0.25rem 0.5rem; border-radius: 6px; font-weight: 600; font-size: 0.8rem; background: {% if student.is_active %}#d1fae5; color: #065f46;{% else %}#fee2e2; color: #991b1b;{% endif %}">
+                        {% if student.is_active %}Active{% else %}Deactivated{% endif %}
+                    </span>
+                </td>
+                <td style="padding: 1rem;">
+                    <div style="display: flex; gap: 8px;">
+                        <a href="{% url 'exams:toggle_student_status' student.id %}" class="btn" style="padding: 0.4rem 0.8rem; font-size: 0.75rem; background: {% if student.is_active %}#ed8936{% else %}#48bb78{% endif %};">
+                            {% if student.is_active %}Deactivate{% else %}Activate{% endif %}
+                        </a>
+                        <a href="{% url 'exams:assign_exams' student.id %}" class="btn" style="padding: 0.4rem 0.8rem; font-size: 0.75rem; background: #4299e1;">Assign Exams</a>
+                        <a href="{% url 'exams:reset_student_password' student.id %}" class="btn" style="padding: 0.4rem 0.8rem; font-size: 0.75rem; background: #667eea;" onclick="return confirm('Generate a new random password for this student?')">Reset Password</a>
+                        <a href="{% url 'exams:delete_student' student.id %}" class="btn btn-danger" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;" onclick="return confirm('Permanently delete this student?')">Delete</a>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" style="padding: 2rem; text-align: center; color: var(--text-muted);">No students registered yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

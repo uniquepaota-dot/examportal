@@ -1,0 +1,308 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary: #1a3673;
+  --primary-hover: #122856;
+  --bg-color: #fcfaf5;
+  --card-bg: #ffffff;
+  --text-main: #1a3673;
+  --text-muted: #718096;
+  --success: #05cd99;
+  --danger: #ee5d50;
+  --border-radius: 20px;
+  --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.03);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.04);
+  --header-bg: #fffdf9;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header - Match Design */
+.header-wrapper {
+  padding: 1.5rem 2rem;
+  background: var(--bg-color);
+}
+
+.header-main {
+  background: var(--header-bg);
+  border-radius: 24px;
+  padding: 1.25rem 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: var(--shadow-md);
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.brand-icon {
+  background: #2b4581;
+  color: white;
+  width: 54px;
+  height: 54px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.25rem;
+  box-shadow: 0 10px 20px rgba(43, 69, 129, 0.2);
+}
+
+.brand-text h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  color: #1a202c;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.brand-text p {
+  font-size: 0.85rem;
+  color: #718096;
+  margin: 0;
+  font-weight: 400;
+}
+
+.nav-grid-center {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-template-rows: auto auto;
+  gap: 0.5rem 2rem;
+  margin: 0 2rem;
+}
+
+.nav-item {
+  color: #4a5568;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  padding: 0.4rem 0.8rem;
+  border-radius: 12px;
+}
+
+.nav-item:hover {
+  color: var(--primary);
+  background: rgba(26, 54, 115, 0.04);
+}
+
+.nav-item.active {
+  color: var(--primary);
+  background: #edf2f7;
+}
+
+.btn-manage {
+  background: #2d3748;
+  color: white !important;
+  padding: 0.85rem 1.75rem !important;
+  border-radius: 24px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-family: 'Playfair Display', serif;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.header-user {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.user-card {
+  background: white;
+  padding: 0.6rem 1rem;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f7fafc;
+}
+
+.user-avatar {
+  background: #2b4581;
+  color: white;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.user-info h4 {
+  font-size: 0.9rem;
+  color: #1a202c;
+  margin: 0;
+  line-height: 1;
+}
+
+.user-info p {
+  font-size: 0.75rem;
+  color: #a0aec0;
+  margin: 0;
+}
+
+.btn {
+  background: var(--primary);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.btn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0px 8px 15px rgba(67, 24, 255, 0.2);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+}
+.btn-secondary:hover {
+  background: var(--primary);
+  color: white;
+}
+
+.btn-danger { background: var(--danger); }
+.btn-danger:hover { background: #d44c40; box-shadow: 0px 8px 15px rgba(238, 93, 80, 0.2); }
+
+.btn-success { background: var(--success); }
+.btn-success:hover { background: #04b386; box-shadow: 0px 8px 15px rgba(5, 205, 153, 0.2); }
+
+/* Layout / Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  width: 100%;
+  flex: 1;
+}
+
+/* Cards */
+.card {
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease;
+}
+
+/* Forms */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  background-color: #f8f9fa;
+  color: var(--text-main);
+  font-family: inherit;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(67, 24, 255, 0.1);
+  background-color: white;
+}
+
+/* Utilities */
+.text-center { text-align: center; }
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }
+.mb-4 { margin-bottom: 2rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-4 { margin-top: 2rem; }
+
+/* Grid systems */
+.grid {
+  display: grid;
+  gap: 1.5rem;
+}
+.grid-2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.grid-3 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+
+/* Exam specific */
+.exam-option {
+  display: block;
+  padding: 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.exam-option:hover {
+  border-color: var(--primary);
+  background: rgba(67, 24, 255, 0.05);
+}
+
+.exam-option input[type="radio"] {
+  margin-right: 10px;
+  accent-color: var(--primary);
+  transform: scale(1.2);
+}
+
+.messages {
+  list-style: none;
+  margin-bottom: 1.5rem;
+}
+
+.messages li {
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.messages .success { background: #d1fae5; color: #065f46; }
+.messages .error { background: #fee2e2; color: #991b1b; }

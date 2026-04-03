@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Assign Exams - {{ student.username }}{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 800px; margin: 2rem auto;">
+    <h2 style="color: var(--primary); margin-bottom: 1rem;">Assign Exams to {{ student.username }}</h2>
+    <p class="text-muted mb-4">Select the exams this student is allowed to see and attempt.</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        
+        <div style="display: grid; grid-template-columns: 1fr; gap: 1rem; margin-bottom: 2rem;">
+            {% for exam in exams %}
+            <label style="display: flex; align-items: center; gap: 15px; padding: 1rem; border: 1px solid #edf2f7; border-radius: 12px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='#f7fafc'" onmouseout="this.style.background='white'">
+                <input type="checkbox" name="exams" value="{{ exam.id }}" {% if exam.id in assigned_exam_ids %}checked{% endif %} style="width: 20px; height: 20px; accent-color: var(--primary);">
+                <div style="flex: 1;">
+                    <h4 style="margin: 0; color: var(--text-main);">{{ exam.title }}</h4>
+                    <p style="margin: 0; font-size: 0.8rem; color: var(--text-muted);">{{ exam.questions.count }} Questions | {{ exam.duration }} mins</p>
+                </div>
+                {% if exam.is_published %}
+                <span style="background: #d1fae5; color: #065f46; font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 10px;">Published</span>
+                {% else %}
+                <span style="background: #edf2f7; color: #718096; font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 10px;">Draft</span>
+                {% endif %}
+            </label>
+            {% empty %}
+            <p class="text-center text-muted">No published exams available to assign.</p>
+            {% endfor %}
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+            <button type="submit" class="btn" style="flex: 1;">Save Assignments</button>
+            <a href="{% url 'exams:student_list' %}" class="btn btn-secondary" style="flex: 1;">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
